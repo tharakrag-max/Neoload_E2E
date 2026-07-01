@@ -1,0 +1,84 @@
+name: NeoLoad Run Test (Project Already Uploaded)
+
+on:
+  workflow_dispatch:
+    inputs:
+      test_settings_name:
+        description: 'Test settings name (created in NeoLoad Web)'
+        required: true
+        default: 'GitHub-Test-Settings'
+
+jobs:
+  neoload-run:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install NeoLoad CLI
+        run: |
+          pip install neoload
+          neoload --version
+
+      - name: Login to NeoLoad Web
+        env:
+          NEOLOAD_TOKEN: ${{ secrets.NEOLOAD_TOKEN }}
+        run: |
+          echo "Logging into NeoLoad Web..."
+          neoload login --url https://neoload-api.saas.neotys.com $NEOLOAD_TOKEN
+
+          echo "Selecting workspace..."
+          neoload workspaces use "Default Workspace"
+
+          echo "Current status:"
+          neoload status
+
+      - name: List Available Tests
+        env:
+          NEOLOAD_TOKEN: ${{ secrets.NEOLOAD_TOKEN }}
+        run: |
+          echo "Available test settings:"
+          neoload test-settings ls
+
+          echo "Available projects:"
+          neoload projects ls || true
+
+      - name: Run Test
+        env:
+          NEOLOAD_TOKEN: ${{ secrets.NEOLOAD_TOKEN }}
+        run: |
+          TEST_NAME="${{ github.event.inputs.test_settings_name }}"
+
+          echo "Running test: $TEST_NAME"
+          neoload run \
+            --name "GitHub-Run-${{ github.run_number }}" \
+            --description "Triggered by ${{ github.actor }} on $(date)" \
+            "$TEST_NAME"
+
+      - name: Get Test Results
+        if: always()
+        env:
+          NEOLOAD_TOKEN: ${{ secrets.NEOLOAD_TOKEN }}
+        run: |
+          echo "Listing test results..."
+          neoload test-results ls
+
+          echo "Getting latest result details..."
+          neoload test-results use latest || true
+
+          echo "Generating JUnit report..."
+          neoload test-results --junit-file neoload-results.xml junitsla || echo "Failed to generate report"
+
+          echo "Test logs URL:"
+          neoload logs-url || echo "No logs available"
+
+      - name: Upload Test Results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: neoload-results
+          path: neoload-results.xml
+          if-no-files-found: warn
