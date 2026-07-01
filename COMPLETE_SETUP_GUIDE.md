@@ -163,7 +163,9 @@ mkdir -p .github/workflows
 
 ### 4.2 Create Workflow Files
 
-Create these three workflow files in `.github/workflows/`:
+Create these workflow files in `.github/workflows/`:
+
+**Required: Only 1 file is necessary for running tests**
 
 #### File 1: `neoload-run-only.yml`
 
@@ -253,9 +255,11 @@ jobs:
           if-no-files-found: warn
 ```
 
-#### File 2: `neoload-upload-project.yml`
+#### File 2: `neoload-upload-project.yml` (OPTIONAL - Reminder Only)
 
-Create: `.github/workflows/neoload-upload-project.yml`
+**NOTE:** This workflow does NOT automatically upload your project. It only shows a reminder when NeoLoad files change. You still need to upload via NeoLoad Desktop manually.
+
+If you want automatic reminders, create: `.github/workflows/neoload-upload-project.yml`
 
 ```yaml
 name: Reminder - Upload Project via NeoLoad Desktop
@@ -300,6 +304,8 @@ jobs:
           echo "================================================"
 ```
 
+**⚠️ IMPORTANT:** Automatic project upload via API is not reliably supported. You must upload projects manually via NeoLoad Desktop. This workflow only reminds you to do so.
+
 ### 4.3 Commit and Push Workflow Files
 
 ```bash
@@ -312,6 +318,12 @@ git commit -m "Add NeoLoad GitHub Actions workflows"
 # Push to GitHub
 git push
 ```
+
+**Summary of Workflows:**
+- **`neoload-run-only.yml`** - ✅ **REQUIRED** - Runs tests from NeoLoad Web
+- **`neoload-upload-project.yml`** - ⚠️ **OPTIONAL** - Just a reminder, doesn't actually upload
+
+**Key Point:** Project upload MUST be done via NeoLoad Desktop. There is no reliable automated upload via GitHub Actions.
 
 ---
 
