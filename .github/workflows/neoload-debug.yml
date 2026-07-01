@@ -1,0 +1,60 @@
+name: NeoLoad Debug Test
+
+on:
+  workflow_dispatch:
+
+jobs:
+  debug-neoload:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install NeoLoad CLI
+        run: |
+          pip install neoload
+          neoload --version
+
+      - name: Test NeoLoad Authentication
+        env:
+          NEOLOAD_TOKEN: ${{ secrets.NEOLOAD_TOKEN }}
+        run: |
+          echo "Testing NeoLoad Web connection..."
+          if [ -z "$NEOLOAD_TOKEN" ]; then
+            echo "ERROR: NEOLOAD_TOKEN is not set!"
+            exit 1
+          fi
+          echo "Token is set (length: ${#NEOLOAD_TOKEN} characters)"
+
+          echo "Attempting login..."
+          neoload login --url https://neoload-api.saas.neotys.com $NEOLOAD_TOKEN
+
+          echo "Login successful! Listing workspaces..."
+          neoload workspaces ls
+
+          echo "Checking status..."
+          neoload status
+
+      - name: Verify Project File
+        run: |
+          echo "Checking for .nlp files..."
+          ls -la *.nlp || echo "No .nlp files found!"
+
+          echo "Repository contents:"
+          ls -la
+
+      - name: Test Project Upload
+        env:
+          NEOLOAD_TOKEN: ${{ secrets.NEOLOAD_TOKEN }}
+        run: |
+          echo "Attempting to upload project..."
+          neoload project --path Neoload_GIT_HUB.nlp upload
+
+          echo "Listing projects..."
+          neoload project ls || true
