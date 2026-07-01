@@ -1,0 +1,63 @@
+name: NeoLoad Performance Test
+
+on:
+  workflow_dispatch:
+    inputs:
+      test_name:
+        description: 'Test scenario name'
+        required: false
+        default: 'default'
+      duration:
+        description: 'Test duration (e.g., 5m, 10m)'
+        required: false
+        default: '5m'
+
+jobs:
+  neoload-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Install NeoLoad CLI
+        run: |
+          pip install neoload
+          neoload --version
+
+      - name: Configure NeoLoad Web
+        env:
+          NEOLOAD_TOKEN: ${{ secrets.NEOLOAD_TOKEN }}
+        run: |
+          neoload login --url https://neoload-api.saas.neotys.com $NEOLOAD_TOKEN
+          neoload workspaces use "Default workspace"
+
+      - name: Upload NeoLoad project
+        run: |
+          neoload project --path Neoload_GIT_HUB.nlp upload
+
+      - name: Run NeoLoad test
+        run: |
+          neoload test-settings --scenario ${{ github.event.inputs.test_name }} patch
+          neoload run \
+            --name "GitHub-Run-${{ github.run_number }}" \
+            --description "Triggered by ${{ github.actor }}" \
+            --as-code Neoload_GIT_HUB.nlp
+
+      - name: Generate test report
+        if: always()
+        run: |
+          neoload test-results --junit-file neoload-results.xml junitsla
+          neoload logs-url
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: neoload-results
+          path: neoload-results.xml

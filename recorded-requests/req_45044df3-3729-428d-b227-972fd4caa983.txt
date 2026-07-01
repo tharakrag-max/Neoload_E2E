@@ -1,0 +1,15 @@
+GET https://www.opencart.com/application/view/image/demonstration/store-admin.png HTTP/2.0
+sec-ch-ua-platform: "Windows"
+user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36 Edg/149.0.0.0
+sec-ch-ua: "Microsoft Edge";v="149", "Chromium";v="149", "Not)A;Brand";v="24"
+sec-ch-ua-mobile: ?0
+accept: image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8
+sec-fetch-site: same-origin
+sec-fetch-mode: no-cors
+sec-fetch-dest: image
+referer: https://www.opencart.com/index.php?route=cms/demo
+accept-encoding: gzip, deflate, br, zstd
+accept-language: en-US,en;q=0.9,en-IN;q=0.8
+cookie: PHPSESSID=3739ddf345891a7c8eb2988875; _gcl_au=1.1.1202142637.1782912816; cf_clearance=mCfzhwJc9VYB5gr.HZxZ34yhkGlT7DRbthcgOlYjFdo-1782912816-1.2.1.1-ywsusmtRSxlDFmYbhMee0CyELk6kQtW7yXyYOYYnE00S4nVZEWSrtO4FxJWE1Rk2Uo.3KXAUIVcT6jT75oIjQXJLmsneDcw9wM6m0IjA4Z.EVfL5Mhbidmy8cYgkO8LPASb.9lEN.tOErcPgP0vhTBobfPToLAB6Dp_rExI5EJvlpPOQkGn6C2EBqQX6oTLfB6pv0oju7smRWD9wvQ1jy8o21grINI0DwXPu4SflqhdnKVm8T1nlgzdLR_.E6sncwH4HoO_T9yfz_DVz3G3rdXIYlmOyLbUdkAEzxUIwZ0CxjLTGdXw_1kaDqOMro22F3OGpbT5zGGgYn8Bd.Y5rDA; _gid=GA1.2.1218878761.1782912817; _gat_gtag_UA_1988725_1=1; _ga=GA1.2.981029713.1782912817; _ga_X8G0BRFSDF=GS2.1.s1782912816$o1$g1$t1782912836$j40$l0$h0
+priority: u=2, i
+

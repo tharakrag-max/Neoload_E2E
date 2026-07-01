@@ -1,0 +1,16 @@
+# Project description file
+
+project.name=Neoload_GIT_HUB
+project.version=8.10
+project.original.version=8.10
+product.name=NeoLoad
+product.original.name=NeoLoad
+ssh.trustUnknownHosts.MONITORS=false
+monitor.tls.insecure=false
+product.version=2025.3.1
+product.original.version=2025.3.1
+project.is-open-test-settings-after-upload=false
+project.id=4274a6c9-3447-4fdf-b254-f70448cae919
+project.config.path=config.zip
+project.config.storage=ZIP
+team.server.enabled=false

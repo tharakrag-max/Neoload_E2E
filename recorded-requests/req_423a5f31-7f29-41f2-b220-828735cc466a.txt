@@ -1,0 +1,19 @@
+POST https://www.opencart.com/cdn-cgi/rum? HTTP/2.0
+content-length: 1265
+sec-ch-ua-platform: "Windows"
+user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36 Edg/149.0.0.0
+sec-ch-ua: "Microsoft Edge";v="149", "Chromium";v="149", "Not)A;Brand";v="24"
+content-type: application/json
+sec-ch-ua-mobile: ?0
+accept: */*
+origin: https://www.opencart.com
+sec-fetch-site: same-origin
+sec-fetch-mode: cors
+sec-fetch-dest: empty
+referer: https://www.opencart.com/
+accept-encoding: gzip, deflate, br, zstd
+accept-language: en-US,en;q=0.9,en-IN;q=0.8
+cookie: PHPSESSID=3739ddf345891a7c8eb2988875; _gcl_au=1.1.1202142637.1782912816; cf_clearance=mCfzhwJc9VYB5gr.HZxZ34yhkGlT7DRbthcgOlYjFdo-1782912816-1.2.1.1-ywsusmtRSxlDFmYbhMee0CyELk6kQtW7yXyYOYYnE00S4nVZEWSrtO4FxJWE1Rk2Uo.3KXAUIVcT6jT75oIjQXJLmsneDcw9wM6m0IjA4Z.EVfL5Mhbidmy8cYgkO8LPASb.9lEN.tOErcPgP0vhTBobfPToLAB6Dp_rExI5EJvlpPOQkGn6C2EBqQX6oTLfB6pv0oju7smRWD9wvQ1jy8o21grINI0DwXPu4SflqhdnKVm8T1nlgzdLR_.E6sncwH4HoO_T9yfz_DVz3G3rdXIYlmOyLbUdkAEzxUIwZ0CxjLTGdXw_1kaDqOMro22F3OGpbT5zGGgYn8Bd.Y5rDA; _ga=GA1.2.981029713.1782912817; _gid=GA1.2.1218878761.1782912817; _gat_gtag_UA_1988725_1=1; _ga_X8G0BRFSDF=GS2.1.s1782912816$o1$g0$t1782912826$j50$l0$h0
+priority: u=4, i
+
+{"referrer":"","eventType":3,"versions":{"js":"2026.6.0","fl":"2024.11.0"},"pageloadId":"53619902-cf8a-40c1-8bed-cb0f4d0e9f20","location":"https://www.opencart.com/","landingPath":"/","startTime":1782912812704.8,"nt":"navigate","siteToken":"1ebb2560b00d4a3c85714e32b9fc8dc7","lcp":{"value":3028,"path":"/","element":"#hero","size":756400,"url":"https://www.opencart.com/application/view/image/home/background_hero.jpg","rld":730.3999999761581,"rlt":20.5,"erd":55.10000002384186,"it":"css","fp":null},"cls":{"value":0.007715505755024457,"path":"/","element":"#navbar-collapse-header>div.hidden-xs.navbar-right","currentRect":{"x":1161.1624755859375,"y":3,"width":165.2375030517578,"height":69,"top":3,"right":1326.3999786376953,"bottom":72,"left":1161.1624755859375},"previousRect":{"x":1139.5999755859375,"y":3,"width":186.8000030517578,"height":69,"top":3,"right":1326.3999786376953,"bottom":72,"left":1139.5999755859375}},"fcp":{"value":3012,"path":"/"},"ttfb":{"value":2222,"path":"/"},"inp":{"value":24,"path":"/","element":"#navbar-collapse-header>ul.nav.navbar-nav>li>a","name":"pointer","idy":0.699999988079071,"pdn":0.3999999761581421,"pdy":22.900000035762787},"timingsV2":{"nextHopProtocol":"h2","transferSize":6754,"decodedBodySize":28997},"dt":"","st":1}

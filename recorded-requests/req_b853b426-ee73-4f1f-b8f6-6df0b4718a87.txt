@@ -1,0 +1,19 @@
+POST https://www.opencart.com/cdn-cgi/rum? HTTP/2.0
+content-length: 942
+sec-ch-ua-platform: "Windows"
+user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36 Edg/149.0.0.0
+sec-ch-ua: "Microsoft Edge";v="149", "Chromium";v="149", "Not)A;Brand";v="24"
+content-type: application/json
+sec-ch-ua-mobile: ?0
+accept: */*
+origin: https://www.opencart.com
+sec-fetch-site: same-origin
+sec-fetch-mode: cors
+sec-fetch-dest: empty
+referer: https://www.opencart.com/index.php?route=cms/feature
+accept-encoding: gzip, deflate, br, zstd
+accept-language: en-US,en;q=0.9,en-IN;q=0.8
+cookie: PHPSESSID=3739ddf345891a7c8eb2988875; _gcl_au=1.1.1202142637.1782912816; cf_clearance=mCfzhwJc9VYB5gr.HZxZ34yhkGlT7DRbthcgOlYjFdo-1782912816-1.2.1.1-ywsusmtRSxlDFmYbhMee0CyELk6kQtW7yXyYOYYnE00S4nVZEWSrtO4FxJWE1Rk2Uo.3KXAUIVcT6jT75oIjQXJLmsneDcw9wM6m0IjA4Z.EVfL5Mhbidmy8cYgkO8LPASb.9lEN.tOErcPgP0vhTBobfPToLAB6Dp_rExI5EJvlpPOQkGn6C2EBqQX6oTLfB6pv0oju7smRWD9wvQ1jy8o21grINI0DwXPu4SflqhdnKVm8T1nlgzdLR_.E6sncwH4HoO_T9yfz_DVz3G3rdXIYlmOyLbUdkAEzxUIwZ0CxjLTGdXw_1kaDqOMro22F3OGpbT5zGGgYn8Bd.Y5rDA; _gid=GA1.2.1218878761.1782912817; _gat_gtag_UA_1988725_1=1; _ga_X8G0BRFSDF=GS2.1.s1782912816$o1$g1$t1782912827$j49$l0$h0; _ga=GA1.2.981029713.1782912817
+priority: u=1, i
+
+{"memory":{"totalJSHeapSize":51267990,"usedJSHeapSize":44226338,"jsHeapSizeLimit":4395630592},"resources":[],"referrer":"https://www.opencart.com/","eventType":1,"firstPaint":2364,"firstContentfulPaint":2364,"startTime":1782912824767.9,"versions":{"fl":"2024.11.0","js":"2026.6.0","timings":2},"pageloadId":"f8847ec2-62e4-4887-9d5a-aee672c050a7","location":"https://www.opencart.com/index.php","nt":"navigate","timingsV2":{"nextHopProtocol":"h2","domainLookupStart":12,"domainLookupEnd":12,"connectStart":12,"connectEnd":12,"requestStart":14.399999976158142,"responseStart":2175.600000023842,"responseEnd":2184.199999988079,"domInteractive":2368.899999976158,"domComplete":2576.699999988079,"loadEventStart":2576.800000011921,"loadEventEnd":2630.600000023842,"finalResponseHeadersStart":2175.600000023842,"firstInterimResponseStart":0,"transferSize":8681,"decodedBodySize":37673},"dt":"","siteToken":"1ebb2560b00d4a3c85714e32b9fc8dc7","st":2}

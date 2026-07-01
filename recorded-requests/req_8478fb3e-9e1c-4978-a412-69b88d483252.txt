@@ -1,0 +1,19 @@
+POST https://www.opencart.com/cdn-cgi/rum? HTTP/2.0
+content-length: 990
+sec-ch-ua-platform: "Windows"
+user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36 Edg/149.0.0.0
+sec-ch-ua: "Microsoft Edge";v="149", "Chromium";v="149", "Not)A;Brand";v="24"
+content-type: application/json
+sec-ch-ua-mobile: ?0
+accept: */*
+origin: https://www.opencart.com
+sec-fetch-site: same-origin
+sec-fetch-mode: cors
+sec-fetch-dest: empty
+referer: https://www.opencart.com/index.php?route=cms/feature
+accept-encoding: gzip, deflate, br, zstd
+accept-language: en-US,en;q=0.9,en-IN;q=0.8
+cookie: PHPSESSID=3739ddf345891a7c8eb2988875; _gcl_au=1.1.1202142637.1782912816; cf_clearance=mCfzhwJc9VYB5gr.HZxZ34yhkGlT7DRbthcgOlYjFdo-1782912816-1.2.1.1-ywsusmtRSxlDFmYbhMee0CyELk6kQtW7yXyYOYYnE00S4nVZEWSrtO4FxJWE1Rk2Uo.3KXAUIVcT6jT75oIjQXJLmsneDcw9wM6m0IjA4Z.EVfL5Mhbidmy8cYgkO8LPASb.9lEN.tOErcPgP0vhTBobfPToLAB6Dp_rExI5EJvlpPOQkGn6C2EBqQX6oTLfB6pv0oju7smRWD9wvQ1jy8o21grINI0DwXPu4SflqhdnKVm8T1nlgzdLR_.E6sncwH4HoO_T9yfz_DVz3G3rdXIYlmOyLbUdkAEzxUIwZ0CxjLTGdXw_1kaDqOMro22F3OGpbT5zGGgYn8Bd.Y5rDA; _gid=GA1.2.1218878761.1782912817; _gat_gtag_UA_1988725_1=1; _ga=GA1.2.981029713.1782912817; _ga_X8G0BRFSDF=GS2.1.s1782912816$o1$g1$t1782912836$j40$l0$h0
+priority: u=4, i
+
+{"referrer":"https://www.opencart.com/","eventType":3,"versions":{"js":"2026.6.0","fl":"2024.11.0"},"pageloadId":"f8847ec2-62e4-4887-9d5a-aee672c050a7","location":"https://www.opencart.com/index.php","landingPath":"/index.php","startTime":1782912824767.9,"nt":"navigate","siteToken":"1ebb2560b00d4a3c85714e32b9fc8dc7","lcp":{"value":2416,"path":"/index.php","element":"#cms-feature>div.page-header","size":378805,"url":"https://www.opencart.com/application/view/image/background/feature.jpg","rld":156.0999999642372,"rlt":37,"erd":47.30000001192093,"it":"css","fp":null},"cls":{"value":0,"path":"/index.php"},"fcp":{"value":2364,"path":"/index.php"},"ttfb":{"value":2175.600000023842,"path":"/index.php"},"inp":{"value":24,"path":"/index.php","element":"#navbar-collapse-header>ul.nav.navbar-nav>li>a","name":"pointer","idy":1.399999976158142,"pdn":0.40000003576278687,"pdy":22.19999998807907},"timingsV2":{"nextHopProtocol":"h2","transferSize":8681,"decodedBodySize":37673},"dt":"","st":1}
