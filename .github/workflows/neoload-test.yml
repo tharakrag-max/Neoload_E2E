@@ -39,7 +39,7 @@ jobs:
           echo "Listing available workspaces..."
           neoload workspaces ls
           echo "Selecting workspace..."
-          neoload workspaces use "Default workspace" || neoload workspaces use "default" || echo "Using current workspace"
+          neoload workspaces use "Default Workspace"
 
       - name: Upload NeoLoad project
         run: |
