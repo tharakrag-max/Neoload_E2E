@@ -61,7 +61,7 @@ jobs:
           NEOLOAD_TOKEN: ${{ secrets.NEOLOAD_TOKEN }}
         run: |
           neoload login --url https://neoload-api.saas.neotys.com $NEOLOAD_TOKEN
-          neoload workspaces use "Default workspace"
+          neoload workspaces use "Default Workspace"
 
       - name: Upload NeoLoad project
         run: |
