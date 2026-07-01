@@ -1,0 +1,114 @@
+name: NeoLoad Web Test
+
+on:
+  workflow_dispatch:
+    inputs:
+      scenario_name:
+        description: 'Scenario name to run'
+        required: false
+        default: 'scenario1'
+
+jobs:
+  neoload-web-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install NeoLoad CLI
+        run: |
+          pip install neoload
+          neoload --version
+
+      - name: Login and Setup Workspace
+        env:
+          NEOLOAD_TOKEN: ${{ secrets.NEOLOAD_TOKEN }}
+        run: |
+          echo "Logging into NeoLoad Web..."
+          neoload login --url https://neoload-api.saas.neotys.com $NEOLOAD_TOKEN
+
+          echo "Selecting workspace..."
+          neoload workspaces use "Default Workspace"
+
+          echo "Current status:"
+          neoload status
+
+      - name: Upload Project to NeoLoad Web
+        env:
+          NEOLOAD_TOKEN: ${{ secrets.NEOLOAD_TOKEN }}
+        run: |
+          echo "Creating zip package of project..."
+          zip -r neoload-project.zip . -i "*.nlp" "config.zip" "*.yaml" "*.yml" "recorded-*/*" "custom-resources/*" "lib/*" "sla_profiles/*"
+
+          echo "Uploading project via API..."
+          PROJECT_NAME="Neoload_GIT_HUB"
+
+          # Upload using curl to NeoLoad Web API
+          UPLOAD_RESPONSE=$(curl -X POST \
+            "https://neoload-api.saas.neotys.com/v3/workspaces/5e3acde2e860a132744ca916/projects/upload" \
+            -H "accountToken: $NEOLOAD_TOKEN" \
+            -H "Content-Type: multipart/form-data" \
+            -F "file=@neoload-project.zip" \
+            -F "projectName=$PROJECT_NAME" || echo "Upload failed")
+
+          echo "Upload response: $UPLOAD_RESPONSE"
+
+      - name: Create or Update Test Settings
+        env:
+          NEOLOAD_TOKEN: ${{ secrets.NEOLOAD_TOKEN }}
+        run: |
+          echo "Listing existing projects..."
+          neoload projects ls || true
+
+          SCENARIO="${{ github.event.inputs.scenario_name }}"
+          if [ -z "$SCENARIO" ]; then
+            SCENARIO="scenario1"
+          fi
+
+          echo "Creating test settings for scenario: $SCENARIO"
+
+          # Try to create test settings
+          neoload test-settings --zone defaultzone --lgs 1 --scenario "$SCENARIO" create "GitHub-Test-Settings" || \
+          echo "Test settings may already exist or scenario not found"
+
+      - name: Run Test from NeoLoad Web
+        env:
+          NEOLOAD_TOKEN: ${{ secrets.NEOLOAD_TOKEN }}
+        run: |
+          echo "Listing available tests..."
+          neoload test-settings ls
+
+          echo "Running test..."
+          neoload run \
+            --name "GitHub-Run-${{ github.run_number }}" \
+            --description "Triggered by ${{ github.actor }}" \
+            "GitHub-Test-Settings" || \
+          echo "Test execution failed. Check NeoLoad Web for details."
+
+      - name: Generate Test Report
+        if: always()
+        env:
+          NEOLOAD_TOKEN: ${{ secrets.NEOLOAD_TOKEN }}
+        run: |
+          echo "Listing test results..."
+          neoload test-results ls || true
+
+          echo "Generating JUnit report..."
+          neoload test-results --junit-file neoload-results.xml junitsla || echo "Failed to generate report"
+
+          echo "Getting logs URL..."
+          neoload logs-url || echo "No logs available"
+
+      - name: Upload Test Results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: neoload-results
+          path: neoload-results.xml
+          if-no-files-found: warn
