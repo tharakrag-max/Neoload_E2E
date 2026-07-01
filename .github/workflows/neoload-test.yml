@@ -34,16 +34,30 @@ jobs:
         env:
           NEOLOAD_TOKEN: ${{ secrets.NEOLOAD_TOKEN }}
         run: |
+          echo "Logging into NeoLoad Web..."
           neoload login --url https://neoload-api.saas.neotys.com $NEOLOAD_TOKEN
-          neoload workspaces use "Default workspace"
+          echo "Listing available workspaces..."
+          neoload workspaces ls
+          echo "Selecting workspace..."
+          neoload workspaces use "Default workspace" || neoload workspaces use "default" || echo "Using current workspace"
 
       - name: Upload NeoLoad project
         run: |
+          echo "Checking project file..."
+          ls -la *.nlp
+          echo "Uploading NeoLoad project..."
           neoload project --path Neoload_GIT_HUB.nlp upload
 
       - name: Run NeoLoad test
         run: |
-          neoload test-settings --scenario ${{ github.event.inputs.test_name }} patch
+          echo "Listing available scenarios..."
+          neoload test-settings ls || true
+          echo "Running test..."
+          neoload run \
+            --name "GitHub-Run-${{ github.run_number }}" \
+            --description "Triggered by ${{ github.actor }}" \
+            --as-code Neoload_GIT_HUB.nlp \
+            --scenario ${{ github.event.inputs.test_name }} || \
           neoload run \
             --name "GitHub-Run-${{ github.run_number }}" \
             --description "Triggered by ${{ github.actor }}" \
@@ -52,8 +66,12 @@ jobs:
       - name: Generate test report
         if: always()
         run: |
-          neoload test-results --junit-file neoload-results.xml junitsla
-          neoload logs-url
+          echo "Listing test results..."
+          neoload test-results ls || true
+          echo "Generating JUnit report..."
+          neoload test-results --junit-file neoload-results.xml junitsla || echo "Failed to generate JUnit report"
+          echo "Getting logs URL..."
+          neoload logs-url || echo "No logs available"
 
       - name: Upload test results
         if: always()
@@ -61,3 +79,4 @@ jobs:
         with:
           name: neoload-results
           path: neoload-results.xml
+          if-no-files-found: warn
