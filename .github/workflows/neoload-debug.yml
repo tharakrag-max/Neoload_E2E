@@ -47,10 +47,8 @@ jobs:
           echo "Checking for .nlp files..."
           ls -la *.nlp || echo "No .nlp files found!"
 
-          echo "Attempting to upload project..."
-          neoload project upload Neoload_GIT_HUB.nlp
-
-          echo "Listing projects..."
-          neoload project ls || true
+          echo "Verifying project file is ready..."
+          cat Neoload_GIT_HUB.nlp || echo "Cannot read .nlp file"
 
           echo "✅ Debug workflow completed successfully!"
+          echo "Note: Project upload is not needed - tests run directly from .nlp file"

@@ -30,7 +30,7 @@ jobs:
           pip install neoload
           neoload --version
 
-      - name: Configure NeoLoad Web and Upload Project
+      - name: Configure NeoLoad Web
         env:
           NEOLOAD_TOKEN: ${{ secrets.NEOLOAD_TOKEN }}
         run: |
@@ -48,9 +48,6 @@ jobs:
 
           echo "Checking project file..."
           ls -la *.nlp
-
-          echo "Uploading NeoLoad project..."
-          neoload project upload Neoload_GIT_HUB.nlp
 
       - name: Run NeoLoad test
         env:
