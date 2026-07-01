@@ -6,7 +6,7 @@ on:
       test_name:
         description: 'Test scenario name'
         required: false
-        default: 'default'
+        default: 'scenario1'
       duration:
         description: 'Test duration (e.g., 5m, 10m)'
         required: false
@@ -55,10 +55,17 @@ jobs:
         run: |
           echo "Listing available scenarios..."
           neoload test-settings ls || true
-          echo "Running test from project..."
+
+          SCENARIO="${{ github.event.inputs.test_name }}"
+          if [ -z "$SCENARIO" ]; then
+            SCENARIO="scenario1"
+          fi
+
+          echo "Running test with scenario: $SCENARIO"
           neoload run \
             --name "GitHub-Run-${{ github.run_number }}" \
             --description "Triggered by ${{ github.actor }}" \
+            --scenario "$SCENARIO" \
             --as-code .
 
       - name: Generate test report
