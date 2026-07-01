@@ -21,7 +21,7 @@ jobs:
           pip install neoload
           neoload --version
 
-      - name: Test NeoLoad Authentication
+      - name: Test NeoLoad Full Workflow
         env:
           NEOLOAD_TOKEN: ${{ secrets.NEOLOAD_TOKEN }}
         run: |
@@ -38,23 +38,19 @@ jobs:
           echo "Login successful! Listing workspaces..."
           neoload workspaces ls
 
-          echo "Checking status..."
+          echo "Selecting workspace..."
+          neoload workspaces use "Default Workspace"
+
+          echo "Checking status after workspace selection..."
           neoload status
 
-      - name: Verify Project File
-        run: |
           echo "Checking for .nlp files..."
           ls -la *.nlp || echo "No .nlp files found!"
 
-          echo "Repository contents:"
-          ls -la
-
-      - name: Test Project Upload
-        env:
-          NEOLOAD_TOKEN: ${{ secrets.NEOLOAD_TOKEN }}
-        run: |
           echo "Attempting to upload project..."
-          neoload project --path Neoload_GIT_HUB.nlp upload
+          neoload project --path Neoload_GIT_HUB.nlp upload --force
 
           echo "Listing projects..."
           neoload project ls || true
+
+          echo "✅ Debug workflow completed successfully!"
