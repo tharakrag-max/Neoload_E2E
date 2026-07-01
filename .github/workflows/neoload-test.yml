@@ -55,16 +55,11 @@ jobs:
         run: |
           echo "Listing available scenarios..."
           neoload test-settings ls || true
-          echo "Running test..."
+          echo "Running test from project..."
           neoload run \
             --name "GitHub-Run-${{ github.run_number }}" \
             --description "Triggered by ${{ github.actor }}" \
-            --as-code Neoload_GIT_HUB.nlp \
-            --scenario ${{ github.event.inputs.test_name }} || \
-          neoload run \
-            --name "GitHub-Run-${{ github.run_number }}" \
-            --description "Triggered by ${{ github.actor }}" \
-            --as-code Neoload_GIT_HUB.nlp
+            --as-code .
 
       - name: Generate test report
         if: always()
