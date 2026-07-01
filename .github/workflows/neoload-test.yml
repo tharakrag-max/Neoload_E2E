@@ -53,20 +53,14 @@ jobs:
         env:
           NEOLOAD_TOKEN: ${{ secrets.NEOLOAD_TOKEN }}
         run: |
-          echo "Listing available scenarios..."
-          neoload test-settings ls || true
+          echo "Running test from local project..."
+          echo "Project will use the default scenario defined in the .nlp configuration"
 
-          SCENARIO="${{ github.event.inputs.test_name }}"
-          if [ -z "$SCENARIO" ]; then
-            SCENARIO="scenario1"
-          fi
-
-          echo "Running test with scenario: $SCENARIO"
           neoload run \
             --name "GitHub-Run-${{ github.run_number }}" \
             --description "Triggered by ${{ github.actor }}" \
-            --scenario "$SCENARIO" \
-            --as-code .
+            --as-code . \
+            --web
 
       - name: Generate test report
         if: always()
