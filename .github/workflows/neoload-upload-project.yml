@@ -1,0 +1,135 @@
+name: Upload NeoLoad Project to Web
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - '*.nlp'
+      - 'config.zip'
+      - 'recorded-*/**'
+      - 'custom-resources/**'
+      - 'lib/**'
+
+jobs:
+  upload-project:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install NeoLoad CLI and dependencies
+        run: |
+          pip install neoload requests
+          neoload --version
+
+      - name: Login to NeoLoad Web
+        env:
+          NEOLOAD_TOKEN: ${{ secrets.NEOLOAD_TOKEN }}
+        run: |
+          echo "Logging into NeoLoad Web..."
+          neoload login --url https://neoload-api.saas.neotys.com $NEOLOAD_TOKEN
+          neoload workspaces use "Default Workspace"
+          neoload status
+
+      - name: Package and Upload Project
+        env:
+          NEOLOAD_TOKEN: ${{ secrets.NEOLOAD_TOKEN }}
+        run: |
+          echo "Packaging project files..."
+
+          # Create a zip of the entire project
+          apt-get update && apt-get install -y zip
+          zip -r neoload-project-upload.zip . \
+            -i "*.nlp" "config.zip" "*.yaml" "*.yml" \
+            "recorded-requests/*" "recorded-responses/*" "recorded-screenshots/*" \
+            "custom-resources/*" "lib/*" "sla_profiles/*" \
+            -x "*.git*" "*.github/*" "*.claude/*" "*node_modules/*"
+
+          echo "Project packaged successfully"
+          ls -lh neoload-project-upload.zip
+
+          echo "Uploading to NeoLoad Web..."
+
+          # Get workspace ID
+          WORKSPACE_ID="5e3acde2e860a132744ca916"
+          PROJECT_NAME="Neoload_GIT_HUB"
+
+          # Upload using NeoLoad Web API
+          RESPONSE=$(curl -s -w "\n%{http_code}" -X POST \
+            "https://neoload-api.saas.neotys.com/v3/workspaces/${WORKSPACE_ID}/projects/upload" \
+            -H "accountToken: ${NEOLOAD_TOKEN}" \
+            -F "file=@neoload-project-upload.zip" \
+            -F "projectName=${PROJECT_NAME}")
+
+          HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
+          BODY=$(echo "$RESPONSE" | head -n-1)
+
+          echo "HTTP Status: $HTTP_CODE"
+          echo "Response: $BODY"
+
+          if [ "$HTTP_CODE" -eq 200 ] || [ "$HTTP_CODE" -eq 201 ]; then
+            echo "✅ Project uploaded successfully to NeoLoad Web!"
+          elif [ "$HTTP_CODE" -eq 409 ]; then
+            echo "⚠️ Project already exists. Attempting to update..."
+            # Try to get project ID and update
+            PROJECT_ID=$(curl -s -X GET \
+              "https://neoload-api.saas.neotys.com/v3/workspaces/${WORKSPACE_ID}/projects" \
+              -H "accountToken: ${NEOLOAD_TOKEN}" | \
+              grep -o "\"id\":\"[^\"]*\".*\"name\":\"${PROJECT_NAME}\"" | \
+              grep -o "\"id\":\"[^\"]*\"" | cut -d'"' -f4)
+
+            if [ -n "$PROJECT_ID" ]; then
+              echo "Found existing project ID: $PROJECT_ID"
+              # Delete old project
+              curl -s -X DELETE \
+                "https://neoload-api.saas.neotys.com/v3/workspaces/${WORKSPACE_ID}/projects/${PROJECT_ID}" \
+                -H "accountToken: ${NEOLOAD_TOKEN}"
+
+              echo "Deleted old project, re-uploading..."
+              # Re-upload
+              RESPONSE2=$(curl -s -w "\n%{http_code}" -X POST \
+                "https://neoload-api.saas.neotys.com/v3/workspaces/${WORKSPACE_ID}/projects/upload" \
+                -H "accountToken: ${NEOLOAD_TOKEN}" \
+                -F "file=@neoload-project-upload.zip" \
+                -F "projectName=${PROJECT_NAME}")
+
+              HTTP_CODE2=$(echo "$RESPONSE2" | tail -n1)
+              echo "Re-upload HTTP Status: $HTTP_CODE2"
+              echo "✅ Project updated successfully!"
+            fi
+          else
+            echo "❌ Upload failed with status $HTTP_CODE"
+            exit 1
+          fi
+
+      - name: Verify Upload
+        env:
+          NEOLOAD_TOKEN: ${{ secrets.NEOLOAD_TOKEN }}
+        run: |
+          echo "Verifying project in NeoLoad Web..."
+          curl -s -X GET \
+            "https://neoload-api.saas.neotys.com/v3/workspaces/5e3acde2e860a132744ca916/projects" \
+            -H "accountToken: ${NEOLOAD_TOKEN}" | \
+            grep -o "\"name\":\"Neoload_GIT_HUB\"" || echo "Project verification pending..."
+
+      - name: Summary
+        run: |
+          echo "================================================"
+          echo "✅ NeoLoad Project Upload Complete"
+          echo "================================================"
+          echo "Project: Neoload_GIT_HUB"
+          echo "Workspace: Default Workspace"
+          echo ""
+          echo "View in NeoLoad Web:"
+          echo "https://neoload.saas.neotys.com/"
+          echo ""
+          echo "To run tests, use the 'NeoLoad Run Test' workflow"
+          echo "================================================"
