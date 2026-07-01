@@ -50,7 +50,7 @@ jobs:
           ls -la *.nlp
 
           echo "Uploading NeoLoad project..."
-          neoload project upload --path Neoload_GIT_HUB.nlp
+          neoload project upload Neoload_GIT_HUB.nlp
 
       - name: Run NeoLoad test
         env:

@@ -48,7 +48,7 @@ jobs:
           ls -la *.nlp || echo "No .nlp files found!"
 
           echo "Attempting to upload project..."
-          neoload project upload --path Neoload_GIT_HUB.nlp
+          neoload project upload Neoload_GIT_HUB.nlp
 
           echo "Listing projects..."
           neoload project ls || true
